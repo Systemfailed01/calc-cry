@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Gain Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            text-align: left;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .telegram-link {
+            margin-top: 20px;
+        }
+
+        .telegram-link img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crypto Gain Calculator</h1>
+        <label for="investment">Initial Investment ($):</label>
+        <input type="number" id="investment" step="0.01" required>
+
+        <label for="buyPrice">Buy Price ($):</label>
+        <input type="number" id="buyPrice" step="0.01" required>
+
+        <label for="sellPrice">Sell Price ($):</label>
+        <input type="number" id="sellPrice" step="0.01" required>
+
+        <label for="fee">Trading Fee (%):</label>
+        <input type="number" id="fee" step="0.01" value="0">
+
+        <button onclick="calculateGains()">Calculate</button>
+
+        <div id="result"></div>
+
+        <div class="telegram-link">
+            <a href="https://t.me/yourtelegramchannel" target="_blank" rel="noopener noreferrer">
+                <img src="my-logo.png" alt="Telegram Logo">
+                Join our Telegram channel
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function calculateGains() {
+            const investment = parseFloat(document.getElementById('investment').value);
+            const buyPrice = parseFloat(document.getElementById('buyPrice').value);
+            const sellPrice = parseFloat(document.getElementById('sellPrice').value);
+            const feePercentage = parseFloat(document.getElementById('fee').value);
+
+            if (isNaN(investment) || isNaN(buyPrice) || isNaN(sellPrice) || isNaN(feePercentage)) {
+                alert("Please enter valid numbers in all fields");
+                return;
+            }
+
+            const cryptoAmount = investment / buyPrice;
+            const buyFee = investment * (feePercentage / 100);
+            const sellFee = cryptoAmount * sellPrice * (feePercentage / 100);
+            const netInvestment = investment + buyFee;
+            const netReturn = (cryptoAmount * sellPrice) - sellFee;
+            const profit = netReturn - netInvestment;
+            const returnPercentage = (profit / netInvestment) * 100;
+
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `
+                <h2>Results</h2>
+                <p>Profit: $${profit.toFixed(2)} (${returnPercentage.toFixed(2)}%)</p>
+            `;
+        }
+    </script>
+</body>
+</html>
